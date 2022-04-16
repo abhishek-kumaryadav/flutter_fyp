@@ -10,6 +10,6 @@ class AuthenticationPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(uiStateProvider);
-    return state == UiState.Login ? LoginPage() : SignUpPage();
+    return state == UiState.Login ? const LoginPage() : SignUpPage();
   }
 }

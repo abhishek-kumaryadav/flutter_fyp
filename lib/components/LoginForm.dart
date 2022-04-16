@@ -68,10 +68,7 @@ class _LoginFormWidgetState extends State<LoginFormWidget> {
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: ElevatedButton(
                   child: const Text('Login'),
-                  onPressed: () {
-                    print(nameController.text);
-                    print(passwordController.text);
-                  },
+                  onPressed: () {},
                 )),
             Row(
               children: <Widget>[

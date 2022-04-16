@@ -10,14 +10,10 @@ class SignUpPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // if (ref.read(userProvider).value != null) {
-    //   // ref.read(firebaseAuthProvider).signOut();
-    //   Navigator.pushReplacementNamed(context, "/home");
-    // }
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Signup Page"),
+        title: const Text("Signup Page"),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -25,17 +21,13 @@ class SignUpPage extends ConsumerWidget {
             Padding(
               padding: const EdgeInsets.only(top: 60.0),
               child: Center(
-                child: Container(
+                child: SizedBox(
                     width: 200,
                     height: 150,
-                    /*decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(50.0)),*/
                     child: Image.asset('../../asset/images/VNIT_logo.png')),
               ),
             ),
             Padding(
-              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
                 controller: emailController,
@@ -46,7 +38,6 @@ class SignUpPage extends ConsumerWidget {
               ),
             ),
             Padding(
-              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: const EdgeInsets.only(
                   left: 15.0, right: 15.0, top: 15, bottom: 0),
               child: TextField(
@@ -58,10 +49,10 @@ class SignUpPage extends ConsumerWidget {
               ),
             ),
             Padding(
-              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
               padding: const EdgeInsets.only(
                   left: 15.0, right: 15.0, top: 15, bottom: 0),
               child: TextField(
+                obscureText: true,
                 controller: passwordController,
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(),
@@ -72,50 +63,33 @@ class SignUpPage extends ConsumerWidget {
             Container(
               height: 50,
               width: 250,
-              // padding: EdgeInsets.only(top: 20),
-              margin: EdgeInsets.only(top: 20),
+              margin: const EdgeInsets.only(top: 20),
               decoration: BoxDecoration(
                   color: Colors.blue, borderRadius: BorderRadius.circular(20)),
-              child: FlatButton(
+              child: ElevatedButton(
                 onPressed: () async {
-                  // Navigator.push(
-                  // context, MaterialPageRoute(builder: (_) => HomePage()));
-                  print(emailController.text);
-                  print(passwordController.text);
-                  print(aadharController.text);
                   await ref
                       .read(firebaseAuthProvider)
                       .createUserWithEmailAndPassword(
                           email: emailController.text,
                           password: passwordController.text);
                   final uid = ref.read(firebaseAuthProvider).currentUser!.uid;
-                  print("Logged in");
-                  print("Logged in with user: " + uid);
                   await ref
                       .read(firebaseDatabaseProvider)
                       .ref("users/" + uid)
                       .set({"aadhar": aadharController.text});
-                  print("Created entry in database");
-
-                  // DatabaseReference reference = FirebaseDatabase.instance
-                  //     .ref(aadharNumber)
-                  //     .child(element.item1)
-                  //     .child(element.item2);
-                  // reference.set(!element.item3);
-                  // print("pushed user to database");
-                  // Navigator.pushNamed(context, "/home");11
                 },
-                child: Text(
+                child: const Text(
                   'Sign Up',
                   style: TextStyle(color: Colors.white, fontSize: 25),
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 130,
             ),
             GestureDetector(
-              child: Text('Already a User? Log In'),
+              child: const Text('Already a User? Log In'),
               onTap: () {
                 ref.read(uiStateProvider.notifier).state = UiState.Login;
               },

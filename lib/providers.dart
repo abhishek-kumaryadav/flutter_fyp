@@ -13,28 +13,22 @@ final firebaseAuthProvider =
 
 final firebaseDatabaseProvider =
     Provider<FirebaseDatabase>((ref) => FirebaseDatabase.instance);
-// final firebaseUser =
-//     StateProvider(((ref) => FirebaseAuth.instance.currentUser));
 
 final userProvider =
     StreamProvider((ref) => FirebaseAuth.instance.authStateChanges());
 
-// final aadharProvider = StateProvider((ref) => "1234");
 final uiStateProvider = StateProvider<UiState>((ref) => UiState.Login);
 final controllerProvider =
     Provider((ref) => TextEditingController(text: "1234"));
 
 final aadharProvider = StreamProvider((pref) {
   final user = pref.watch(userProvider).value;
-  print(user!.uid.toString());
   DatabaseReference ref = FirebaseDatabase.instance.ref("users/" + user!.uid);
-  final ref_value = ref.onValue;
-  return ref_value.map((event) {
+  final refValue = ref.onValue;
+  return refValue.map((event) {
     for (var doc in event.snapshot.children) {
       final docname = doc.key;
       final value = doc.value;
-      print(docname);
-      print(value);
       if (docname == "aadhar") return value;
     }
   });
@@ -43,12 +37,10 @@ final aadharProvider = StreamProvider((pref) {
 final snapshotProvider =
     StreamProvider<List<Tuple3<String, String, bool>>>((pref) {
   final aadharNumber = pref.watch(aadharProvider);
-  print("Aadhar Number is:" + aadharNumber.value.toString());
   DatabaseReference ref =
       FirebaseDatabase.instance.ref(aadharNumber.value.toString());
-  print(ref.path);
-  final ref_value = ref.onValue;
-  return ref_value.map((event) {
+  final refValue = ref.onValue;
+  return refValue.map((event) {
     final result = <Tuple3<String, String, bool>>[];
     for (var org in event.snapshot.children) {
       final orgname = org.key;
@@ -64,5 +56,4 @@ final snapshotProvider =
 
 final debugger = Provider((ref) {
   final snapshot = ref.watch(snapshotProvider);
-  print(snapshot.toString());
 });
